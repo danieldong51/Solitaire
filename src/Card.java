@@ -1,4 +1,9 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Card {
     final public static int WIDTH = 100;
@@ -6,6 +11,7 @@ public class Card {
     Rank rank;
     Suit suit;
     Color color;
+    private ImageIcon image;
     boolean isUp;
     int x, y;
 
@@ -13,6 +19,15 @@ public class Card {
         this.rank = Rank.getRankByInt(rank);
         this.suit = Suit.getSuitByNum(suit);
         this.color = this.suit.getColor();
+        BufferedImage img;
+        try {
+//            img = ImageIO.read(new File("images/" + toString() + ".png"));
+            img = ImageIO.read(new File("images/A of HEARTS.png"));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.image = new ImageIcon(img);
         isUp = false;
         x = 0;
         y = 0;
@@ -62,7 +77,7 @@ public class Card {
         isUp = !isUp;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         g.clearRect(x, y, WIDTH, HEIGHT);
         g.setColor(Color.WHITE);
         g.drawRect(x, y, WIDTH, HEIGHT);
@@ -70,8 +85,8 @@ public class Card {
         if (isUp) {
             g.setColor(color);
             g.drawString(rank.toString(), x+10, y+8);
+            g.drawString("\u2665", x+10, y+8);
         }
-
 
     }
 

@@ -4,6 +4,19 @@ public class TableauPile extends Pile {
     public TableauPile(int x, int y) {
         super(x, y);
     }
+
+    public boolean addCards(ArrayList<Card> cards) {
+        if (!canAdd(cards)) {
+            return false;
+        }
+
+        for (Card card : cards) {
+            card.setX(x);
+            card.setY(y + (pile.size() * 30));
+            pile.push(card);
+        }
+        return true;
+    }
     private boolean canAdd(ArrayList<Card> cards) {
         if (cards.isEmpty()) {
             return false;

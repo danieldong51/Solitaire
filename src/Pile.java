@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -27,7 +28,11 @@ public class Pile {
         if (!canAdd(cards)) {
             return false;
         }
-        pile.addAll(cards);
+        for (Card card : cards) {
+            card.setX(x);
+            card.setY(y);
+            pile.push(card);
+        }
         return true;
     }
 
@@ -50,7 +55,7 @@ public class Pile {
         return false;
     }
 
-    public void display(Graphics g) {
+    public void display(Graphics g) throws IOException {
         g.setColor(Color.black);
         if (isEmpty()) {
             g.drawRect(x, y, Card.WIDTH, Card.HEIGHT);

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +14,7 @@ import java.util.Collections;
  *
  * @author Daniel Dong
  */
-public class Game extends JFrame {
+public class Game {
     ArrayList<TableauPile> Tableau;
     ArrayList<FoundationPile> Foundations;
     HandPile Hand;
@@ -21,7 +24,6 @@ public class Game extends JFrame {
 
     private static final int SUIT_SIZE = 4, RANK_SIZE = 13;
 
-    private static final int width = 1000, height = 800;
 
     /**
      * Returns a 52-card deck and shuffles the cards
@@ -43,8 +45,6 @@ public class Game extends JFrame {
      */
     public Game() {
         Piles = new ArrayList<>();
-        Piles.add(Trash);
-        Piles.add(Hand);
 
         // Instantiates all 4 piles / piles of piles
         Foundations = new ArrayList<>();
@@ -52,49 +52,16 @@ public class Game extends JFrame {
         Hand = createDeck();
         dealTableau();
 
+        Piles.add(Trash);
+        Piles.add(Hand);
+
         for (int i = 0; i < 4; i++) {
             Foundations.add(new FoundationPile(78 + (124*i), 47));
             Piles.add(Foundations.get(i));
         }
 
-        JComponent canvas = setupCanvas();
-        JComponent gui = setupGUI();
-
-        // Put the buttons and canvas together into the window
-        Container cp = getContentPane();
-        cp.setLayout(new BorderLayout());
-        cp.add(canvas, BorderLayout.CENTER);
-        cp.add(gui, BorderLayout.NORTH);
-
-        // Usual initialization
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setVisible(true);
     }
 
-    private JComponent setupCanvas() {
-        JComponent canvas = new JComponent() {
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-            }
-        };
-
-        canvas.setPreferredSize(new Dimension(width, height));
-
-        canvas.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent event) {
-//                handlePress(event.getPoint());
-//            }
-//
-//            public void mouseReleased(MouseEvent event) {
-//                handleRelease(event.getPoint());
-//            }
-        });
-
-        return canvas;
-    };
 
     private JComponent setupGUI() {
         JComponent gui = new JPanel();
@@ -114,6 +81,13 @@ public class Game extends JFrame {
             }
             Piles.add(Tableau.get(pile));
         }
+    }
+
+    public void display(Graphics g) throws IOException {
+        for (Pile pile : Piles) {
+            pile.display(g);
+        }
+
     }
 
     public String toString() {
