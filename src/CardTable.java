@@ -4,17 +4,21 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class CardTable extends JComponent implements MouseListener, MouseMotionListener {
+public class CardTable extends JFrame implements MouseListener, MouseMotionListener {
     private static final int width = 1000, height = 800;
 
-    private Game game;
+    private GamePane game;
 
     public CardTable() {
+        setTitle("Solitaire");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLUE);
 
         addMouseListener(this);
         addMouseMotionListener(this);
+        pack();
+        setVisible(true);
     }
 
     public void paintComponent(Graphics g) {

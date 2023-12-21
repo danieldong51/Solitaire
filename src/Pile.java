@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class Pile {
-    Stack<Card> pile;
+    ArrayList<Card> pile;
     int x;
     int y;
 
     public Pile() {
-        pile = new Stack<>();
+        pile = new ArrayList<>();
         x = 0;
         y = 0;
     }
 
     public Pile(int x, int y) {
-        pile = new Stack<>();
+        pile = new ArrayList<>();
         this.x = x;
         this.y = y;
     }
@@ -24,43 +24,46 @@ public class Pile {
         return false;
     }
 
-    public boolean addCards(ArrayList<Card> cards) {
-        if (!canAdd(cards)) {
-            return false;
-        }
-        for (Card card : cards) {
-            card.setX(x);
-            card.setY(y);
-            pile.push(card);
-        }
-        return true;
+    public void addCards(ArrayList<Card> cards) {
+        pile.addAll(cards);
     }
 
     public boolean isEmpty() {
         return pile.isEmpty();
     }
 
+    public void move(int dx, int dy) {
+        for (Card card : pile) {
+            card.setX(card.getX() + dx);
+            card.setY(card.getY() + dy);
+        }
+    }
+
     public int numCards() {
         return pile.size();
     }
 
-    public Card drawCard() {
-        if (isEmpty()) {
-            throw new RuntimeException("No cards in pile!");
-        }
-        return pile.pop();
-    }
-
+    /**
+     * Returns if a coordinate x, y is within the pile
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return boolean if x, y are in the pile
+     */
     public boolean includes(int x, int y) {
         return false;
     }
 
-    public void display(Graphics g) throws IOException {
+    public Pile doPress(int x, int y) {
+        return null;
+    }
+
+    public void display(Graphics g) {
         g.setColor(Color.black);
         if (isEmpty()) {
             g.drawRect(x, y, Card.WIDTH, Card.HEIGHT);
         } else {
-            pile.peek().draw(g);
+            pile.get(pile.size()-1).draw(g);
         }
     }
 

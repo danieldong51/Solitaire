@@ -15,7 +15,7 @@ public class FoundationPile extends Pile {
             return card.getRank().getRank() == 1;
         }
 
-        Card topCard = pile.peek();
+        Card topCard = pile.get(pile.size()-1);
 
         return topCard.getSuit().equals(card.getSuit()) && topCard.getRank().getRank() == card.getRank().getRank() - 1;
     }

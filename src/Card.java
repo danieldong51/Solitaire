@@ -11,7 +11,8 @@ public class Card {
     Rank rank;
     Suit suit;
     Color color;
-    private ImageIcon image;
+    private final ImageIcon image;
+    private final ImageIcon backImage;
     boolean isUp;
     int x, y;
 
@@ -19,26 +20,20 @@ public class Card {
         this.rank = Rank.getRankByInt(rank);
         this.suit = Suit.getSuitByNum(suit);
         this.color = this.suit.getColor();
-        BufferedImage img;
+        BufferedImage img, backimg;
         try {
 //            img = ImageIO.read(new File("images/" + toString() + ".png"));
-            img = ImageIO.read(new File("images/A of HEARTS.png"));
+            img = ImageIO.read(new File("src/images/" + toString() + ".png"));
+            backimg = ImageIO.read(new File("src/images/back.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         this.image = new ImageIcon(img);
+        this.backImage = new ImageIcon(backimg);
         isUp = false;
         x = 0;
         y = 0;
-    }
-
-    public boolean canAddToFoundation(Card topCard) {
-        return topCard.suit.getSuit() == suit.getSuit() && topCard.rank.getRank() == (rank.getRank() + 1);
-    }
-
-    public boolean canAddToFoundation() {
-        return rank.getRank() == 1;
     }
 
     public Rank getRank() {
@@ -77,17 +72,25 @@ public class Card {
         isUp = !isUp;
     }
 
-    public void draw(Graphics g) throws IOException {
-        g.clearRect(x, y, WIDTH, HEIGHT);
-        g.setColor(Color.WHITE);
-        g.drawRect(x, y, WIDTH, HEIGHT);
+    public void flipUp() {
+        isUp = true;
+    }
 
+    public void flipDown() {
+        isUp = false;
+    }
+
+    public boolean includes(int x, int y) {
+        return x >= this.x && x <= this.x + WIDTH && y >= this.y && y <= this.y + HEIGHT;
+    }
+
+    public void draw(Graphics g) {
         if (isUp) {
-            g.setColor(color);
-            g.drawString(rank.toString(), x+10, y+8);
-            g.drawString("\u2665", x+10, y+8);
+            g.drawImage(image.getImage(), x, y, null);
         }
-
+        else {
+            g.drawImage(backImage.getImage(), x, y, null);
+        }
     }
 
     @Override
